@@ -4,7 +4,7 @@ CINEMA-SCREEN-COMPARISON
 
 An interactive, data-driven web tool to visually compare the largest cinema screens across South India — including PLF, IMAX, and Dolby formats — all drawn **to scale**.
 
-🔗 **Live Site:** [Dins7.github.io/cinema-screens](https://Dins7.github.io/cinema-screens)
+🔗 **Live Site:** [dins7.github.io/CINEMA-SCREEN-COMPARISON](https://dins7.github.io/CINEMA-SCREEN-COMPARISON/)
 
 ---
 
