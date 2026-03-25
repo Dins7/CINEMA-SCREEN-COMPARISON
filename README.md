@@ -13,8 +13,8 @@ An interactive, data-driven web tool to visually compare the largest cinema scre
 | # | Screen | Theater | City | Type | Size (ft) |
 |---|--------|---------|------|------|-----------|
 | 1 | PCX | Prasads Multiplex | Hyderabad | PLF | 101.6 × 64 |
-| 2 | V Epiq | V Cinemas | Sullurpeta | PLF | 100 × 54 |
-| 3 | BigPix | Escape Cinemas | Chennai | PLF | 82 × 34 |
+| 2 | V Epiq | V Celluloids | Sullurpeta | PLF | 100 × 54 |
+| 3 | BigPix | INOX Marina Mall | Chennai | PLF | 82 × 34 |
 | 4 | Allu Cinemas Dolby | Allu Cinemas | Hyderabad | Dolby Atmos | 75 × 40.5 |
 | 5 | IMAX Palazzo | PVR Inox Nexus Vijaya | Chennai | IMAX Digital | 70 × 39 |
 | 6 | IMAX Luxe | INOX Phoenix Mall | Chennai | IMAX Luxe | 63 × 35 |
