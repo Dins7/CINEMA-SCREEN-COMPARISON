@@ -73,7 +73,7 @@ open index.html
 ## 🤝 Contributing
 
 Found a screen that should be included? Have verified dimensions for any screen?  
-Open an [issue](https://github.com/yourusername/cinema-screens/issues) or submit a pull request!
+Open an [issue](https://github.com/Dins7/CINEMA-SCREEN-COMPARISON/issues) or submit a pull request!
 
 ## 📄 License
 
