@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South India Cinema Screen Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05070d;--surf:#0b0f1a;--surf2:#10151f;--surf3:#151c2a;
+  --bord:#1a2535;--bord2:#233044;
+  --acc:#e8c84a;--acc2:#4ab8e8;--acc3:#e84a7a;
+  --text:#d8e8f8;--muted:#4a6282;--muted2:#6a88a8;
+  --grid:rgba(74,184,232,0.04);
+  --rad:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);font-family:'Barlow Condensed',sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* ─── LAYOUT ─── */
+.page{max-width:1440px;margin:0 auto;padding:32px 32px 64px;}
+
+/* ─── HEADER ─── */
+.hdr{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--bord);padding-bottom:20px;margin-bottom:24px;gap:20px;}
+.hdr-l h1{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;letter-spacing:2px;color:#fff;}
+.hdr-l h1 em{color:var(--acc);font-style:normal;}
+.hdr-l p{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;text-transform:uppercase;}
+.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
+.pill{font-family:'DM Mono',monospace;font-size:10px;padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.pill-gold{background:rgba(232,200,74,.1);color:var(--acc);border:1px solid rgba(232,200,74,.22);}
+.pill-blue{background:rgba(74,184,232,.08);color:var(--acc2);border:1px solid rgba(74,184,232,.18);}
+.pill-pink{background:rgba(232,74,122,.08);color:var(--acc3);border:1px solid rgba(232,74,122,.18);}
+
+/* ─── NAV TABS ─── */
+.tabs{display:flex;gap:4px;margin-bottom:22px;border-bottom:1px solid var(--bord);padding-bottom:0;}
+.tab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;padding:9px 18px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s;}
+.tab:hover{color:var(--text);}
+.tab.on{color:var(--acc2);border-bottom-color:var(--acc2);}
+
+/* ─── PANELS ─── */
+.panel{display:none;}.panel.on{display:block;}
+
+/* ─── CITY FILTER ─── */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.toolbar-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;flex-shrink:0;}
+.city-btn{font-family:'DM Mono',monospace;font-size:10px;padding:4px 13px;border-radius:20px;border:1px solid var(--bord2);background:transparent;color:var(--muted2);cursor:pointer;letter-spacing:.8px;transition:all .15s;}
+.city-btn:hover{color:var(--text);border-color:var(--muted2);}
+.city-btn.on{background:rgba(74,184,232,.1);color:var(--acc2);border-color:var(--acc2);}
+.sep{width:1px;height:20px;background:var(--bord);flex-shrink:0;}
+.util-btn{font-family:'DM Mono',monospace;font-size:9px;padding:4px 12px;border:1px solid var(--bord);border-radius:3px;background:transparent;color:var(--muted);cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:all .15s;}
+.util-btn:hover{color:var(--text);border-color:var(--muted2);}
+.share-btn{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;padding:4px 12px;border:1px solid rgba(232,200,74,.25);border-radius:3px;background:rgba(232,200,74,.06);color:var(--acc);cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:all .15s;margin-left:auto;}
+.share-btn:hover{background:rgba(232,200,74,.12);}
+#activeCount{font-family:'DM Mono',monospace;font-size:10px;padding:4px 12px;border-radius:20px;background:rgba(74,184,232,.07);color:var(--acc2);border:1px solid rgba(74,184,232,.15);letter-spacing:.8px;white-space:nowrap;}
+
+/* ─── TOGGLE BUTTONS ─── */
+.toggles{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;}
+.tbtn{display:flex;align-items:center;gap:6px;padding:5px 12px 5px 8px;border-radius:var(--rad);border:1.5px solid;background:transparent;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.3px;transition:all .16s;user-select:none;}
+.tbtn .chk{width:14px;height:14px;border-radius:3px;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
+.tbtn .chk svg{opacity:0;transition:opacity .12s;}
+.tbtn.on .chk{background:currentColor;}
+.tbtn.on .chk svg{opacity:1;}
+.tbtn.off{opacity:.3;filter:grayscale(.7);}
+.tbtn .tn{font-size:13px;}
+.tbtn .tc{font-family:'DM Mono',monospace;font-size:8px;opacity:.5;margin-left:1px;}
+
+/* ─── CHART ─── */
+.chart-wrap{position:relative;background:var(--surf);border:1px solid var(--bord);border-radius:var(--rad);margin-bottom:22px;overflow:hidden;}
+.chart-wrap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;}
+#chartSvg{display:block;width:100%;}
+
+/* ─── TOOLTIP ─── */
+#tooltip{position:fixed;pointer-events:none;z-index:999;opacity:0;transition:opacity .15s;max-width:240px;}
+.tt-box{background:#0d1525;border:1px solid var(--bord2);border-radius:var(--rad);padding:12px 14px;box-shadow:0 8px 32px rgba(0,0,0,.6);}
+.tt-name{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;}
+.tt-city{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);margin-top:1px;}
+.tt-divider{height:1px;background:var(--bord);margin:8px 0;}
+.tt-row{display:flex;justify-content:space-between;gap:16px;margin-top:4px;}
+.tt-k{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+.tt-v{font-family:'DM Mono',monospace;font-size:11px;color:var(--text);}
+.tt-bar{height:3px;border-radius:2px;margin-top:6px;}
+
+/* ─── TABLE ─── */
+.data-table{border:1px solid var(--bord);border-radius:var(--rad);overflow:hidden;margin-bottom:22px;}
+.tbl-hdr{display:grid;grid-template-columns:48px 1fr 120px 130px 100px 130px 1fr;background:var(--surf2);border-bottom:1px solid var(--bord);padding:9px 16px;}
+.th{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+.tbl-row{display:grid;grid-template-columns:48px 1fr 120px 130px 100px 130px 1fr;padding:10px 16px;border-bottom:1px solid rgba(26,37,53,.6);align-items:center;transition:all .2s;cursor:pointer;}
+.tbl-row:last-child{border-bottom:none;}
+.tbl-row:hover{background:rgba(255,255,255,.02);}
+.tbl-row.off{opacity:.2;filter:grayscale(.8);}
+.td-n{font-weight:700;font-size:14px;}
+.td-c{font-size:11px;color:var(--muted);margin-top:1px;}
+.td-tag{font-family:'DM Mono',monospace;font-size:9px;padding:2px 7px;border-radius:10px;border:1px solid;white-space:nowrap;display:inline-block;}
+.td-mono{font-family:'DM Mono',monospace;font-size:12px;color:var(--acc2);}
+.td-ratio{font-family:'DM Mono',monospace;font-size:12px;}
+.td-area{font-family:'DM Mono',monospace;font-size:12px;color:var(--acc);}
+.bar-w{display:flex;align-items:center;gap:7px;}
+.bar-bg{flex:1;height:4px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden;}
+.bar-f{height:100%;border-radius:2px;transition:width .4s;}
+.pct{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);width:32px;}
+.sw{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle;flex-shrink:0;}
+
+/* ─── IMAX SIMULATOR ─── */
+.sim-wrap{background:var(--surf);border:1px solid var(--bord);border-radius:var(--rad);padding:24px;margin-bottom:22px;}
+.sim-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap;}
+.sim-hdr h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;color:var(--acc2);}
+.sim-hdr p{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:.5px;}
+.sim-controls{display:flex;gap:8px;flex-wrap:wrap;}
+.sim-btn{font-family:'DM Mono',monospace;font-size:10px;padding:5px 13px;border-radius:3px;border:1px solid var(--bord2);background:transparent;color:var(--muted2);cursor:pointer;letter-spacing:.8px;transition:all .15s;}
+.sim-btn:hover{color:var(--text);}
+.sim-btn.on{background:rgba(74,184,232,.1);color:var(--acc2);border-color:var(--acc2);}
+.sim-screens{display:flex;gap:20px;flex-wrap:wrap;}
+.sim-screen-card{flex:1;min-width:260px;}
+.sim-screen-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;margin-bottom:8px;}
+.sim-canvas-wrap{position:relative;background:#000;border:1px solid var(--bord);border-radius:3px;overflow:hidden;}
+.sim-canvas{width:100%;display:block;}
+.sim-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:5px;text-align:center;letter-spacing:.5px;}
+
+/* ─── COMPARE PANEL ─── */
+.cmp-wrap{background:var(--surf);border:1px solid var(--bord);border-radius:var(--rad);padding:24px;margin-bottom:22px;}
+.cmp-hdr{margin-bottom:18px;}
+.cmp-hdr h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;color:var(--acc);}
+.cmp-selects{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.cmp-sel{flex:1;min-width:180px;}
+.cmp-sel label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:5px;}
+.cmp-sel select{width:100%;background:var(--surf2);border:1px solid var(--bord2);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:7px 10px;border-radius:3px;cursor:pointer;}
+.cmp-visual{display:flex;gap:24px;align-items:flex-end;flex-wrap:wrap;}
+.cmp-card{flex:1;min-width:200px;}
+.cmp-screen-box{position:relative;border:2px solid;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.cmp-screen-label{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;text-align:center;padding:8px;}
+.cmp-stats{margin-top:12px;}
+.cmp-stat{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--bord);font-size:12px;}
+.cmp-stat:last-child{border-bottom:none;}
+.cmp-stat-k{color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;}
+.cmp-stat-v{font-family:'DM Mono',monospace;font-size:11px;}
+.cmp-vs{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--muted);align-self:center;flex-shrink:0;}
+.cmp-diff{background:var(--surf2);border:1px solid var(--bord);border-radius:var(--rad);padding:16px;margin-top:18px;}
+.cmp-diff h3{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.diff-item{text-align:center;padding:10px;background:var(--surf);border:1px solid var(--bord);border-radius:4px;}
+.diff-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;}
+.diff-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-top:2px;}
+
+/* ─── RATIO PILL ─── */
+.ratio-pill{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:10px;}
+.ratio-wide{background:rgba(232,180,74,.1);color:#e8b44a;border:1px solid rgba(232,180,74,.2);}
+.ratio-tall{background:rgba(74,184,232,.1);color:var(--acc2);border:1px solid rgba(74,184,232,.2);}
+.ratio-mid{background:rgba(123,232,127,.1);color:#7be87f;border:1px solid rgba(123,232,127,.2);}
+
+/* ─── FOOTER ─── */
+.footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bord);padding-top:16px;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);line-height:1.9;letter-spacing:.3px;flex-wrap:wrap;gap:8px;}
+
+/* ─── SHARE TOAST ─── */
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#0d1525;border:1px solid var(--acc);color:var(--acc);font-family:'DM Mono',monospace;font-size:11px;padding:10px 20px;border-radius:4px;letter-spacing:1px;opacity:0;transition:all .3s;pointer-events:none;z-index:9999;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div id="tooltip"><div class="tt-box" id="ttInner"></div></div>
+<div id="toast">🔗 Link copied to clipboard!</div>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-l">
+    <h1>SOUTH INDIA <em>SCREEN</em> COMPARISON</h1>
+    <p>Premium Large Format · IMAX · PLF · Dolby · All Dimensions in Feet · Bottom-Aligned to Scale</p>
+  </div>
+  <div class="hdr-r">
+    <span class="pill pill-gold" id="screenCountPill">8 Screens</span>
+    <span class="pill pill-blue" id="areaRangePill">Area: 1,710 – 6,502 sq ft</span>
+    <span class="pill pill-pink" id="activePill">8 / 8 Active</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab on" data-tab="chart">📐 Scale Chart</button>
+  <button class="tab" data-tab="compare">⚖️ Compare Two</button>
+  <button class="tab" data-tab="simulator">🎬 Movie Fit Simulator</button>
+  <button class="tab" data-tab="table">📊 Data Table</button>
+</div>
+
+<!-- ════════════ CHART PANEL ════════════ -->
+<div class="panel on" id="panel-chart">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <span class="toolbar-label">City:</span>
+    <button class="city-btn on" data-city="all">All</button>
+    <button class="city-btn" data-city="Chennai">Chennai</button>
+    <button class="city-btn" data-city="Hyderabad">Hyderabad</button>
+    <button class="city-btn" data-city="Sullurpeta">Sullurpeta</button>
+    <div class="sep"></div>
+    <button class="util-btn" id="btnAll">Select All</button>
+    <button class="util-btn" id="btnNone">Clear All</button>
+    <span id="activeCount">8 / 8 Active</span>
+    <button class="share-btn" id="shareBtn">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share View
+    </button>
+  </div>
+
+  <!-- TOGGLE BUTTONS -->
+  <div class="toggles" id="toggles"></div>
+
+  <!-- CHART SVG -->
+  <div class="chart-wrap"><svg id="chartSvg"></svg></div>
+
+</div>
+
+<!-- ════════════ COMPARE PANEL ════════════ -->
+<div class="panel" id="panel-compare">
+  <div class="cmp-wrap">
+    <div class="cmp-hdr">
+      <h2>SIDE-BY-SIDE COMPARISON</h2>
+      <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:3px;">Select any two screens to compare specs, area, and dimensions visually</p>
+    </div>
+    <div class="cmp-selects">
+      <div class="cmp-sel"><label>Screen A</label><select id="cmpA"></select></div>
+      <div class="cmp-sel"><label>Screen B</label><select id="cmpB"></select></div>
+    </div>
+    <div class="cmp-visual" id="cmpVisual"></div>
+    <div class="cmp-diff" id="cmpDiff"></div>
+  </div>
+</div>
+
+<!-- ════════════ SIMULATOR PANEL ════════════ -->
+<div class="panel" id="panel-simulator">
+  <div class="sim-wrap">
+    <div class="sim-hdr">
+      <div>
+        <h2>🎬 MOVIE FIT SIMULATOR</h2>
+        <p>See how different movie formats fill IMAX & PLF screens. Black bars = unused screen.</p>
+      </div>
+      <div class="sim-controls">
+        <button class="sim-btn on" data-fmt="imax">IMAX Filmed (1.43:1)</button>
+        <button class="sim-btn" data-fmt="scope">Scope (2.39:1)</button>
+        <button class="sim-btn" data-fmt="flat">Flat (1.85:1)</button>
+        <button class="sim-btn" data-fmt="wide">Widescreen (2.35:1)</button>
+        <button class="sim-btn" data-fmt="standard">Standard (1.78:1)</button>
+      </div>
+    </div>
+    <div class="sim-screens" id="simScreens"></div>
+  </div>
+</div>
+
+<!-- ════════════ TABLE PANEL ════════════ -->
+<div class="panel" id="panel-table">
+  <div class="data-table">
+    <div class="tbl-hdr">
+      <div class="th">#</div>
+      <div class="th">Screen</div>
+      <div class="th">Type</div>
+      <div class="th">W × H (ft)</div>
+      <div class="th">Ratio</div>
+      <div class="th">Area</div>
+      <div class="th">Relative Size</div>
+    </div>
+    <div id="tableBody"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>* Screens bottom-aligned · All proportions to scale · Hover screen for tooltip · IMAX Palazzo dims community-sourced (unverified)<br>* BigPix, P[XL] dims approximate · 6ft human silhouette shown to scale · Wider ratio = more cinematic widescreen feel</div>
+  <div>SOUTH INDIA CINEMA SCREENS © 2024</div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ═══════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════
+const SCREENS = [
+  // Sorted by area desc, numbered 1–8
+  {id:0, num:1, name:"Prasads Multiplex PCX",    short:"PCX",          city:"Hyderabad",       tag:"PLF",         type:"PLF",   w:101.6, h:64.0,  ratio:1.585, area:6502, color:"#e8c84a", isNew:false, imax:false},
+  {id:1, num:2, name:"V Epiq",                   short:"V Epiq",       city:"Sullurpeta",      tag:"PLF",         type:"PLF",   w:100.0, h:54.0,  ratio:1.852, area:5400, color:"#4ab8e8", isNew:false, imax:false},
+  {id:2, num:3, name:"BigPix",                   short:"BigPix",       city:"Chennai",         tag:"PLF",         type:"PLF",   w:82.0,  h:34.0,  ratio:2.412, area:2788, color:"#7be87f", isNew:false, imax:false},
+  {id:3, num:4, name:"Allu Cinemas Dolby",        short:"Allu Dolby",   city:"Hyderabad",       tag:"Dolby Atmos", type:"Dolby", w:75.0,  h:40.5,  ratio:1.852, area:3037, color:"#c87be8", isNew:false, imax:false},
+  {id:4, num:5, name:"IMAX Palazzo (PVR Inox)",   short:"IMAX Palazzo", city:"Chennai",         tag:"IMAX Digital",type:"IMAX",  w:70.0,  h:39.0,  ratio:1.795, area:2730, color:"#00c2ff", isNew:false, imax:true},
+  {id:5, num:6, name:"IMAX Luxe (Phoenix Mall)",  short:"IMAX Luxe",    city:"Chennai",         tag:"IMAX Luxe",   type:"IMAX",  w:63.0,  h:35.0,  ratio:1.800, area:2205, color:"#00e5cc", isNew:false, imax:true},
+  {id:6, num:7, name:"P[XL]",                    short:"P[XL]",        city:"Chennai",         tag:"PLF",         type:"PLF",   w:60.0,  h:32.0,  ratio:1.875, area:1920, color:"#e87b4a", isNew:false, imax:false},
+  {id:7, num:8, name:"EPIQ (Rakki Cinemas)",      short:"EPIQ",         city:"Chennai",         tag:"PLF · New",   type:"PLF",   w:57.0,  h:30.0,  ratio:1.900, area:1710, color:"#e84a7a", isNew:true,  imax:false},
+];
+
+const TYPE_COLORS = {PLF:"#e8c84a", IMAX:"#00c2ff", Dolby:"#c87be8"};
+const MAX_W = 101.6, MAX_H = 64.0;
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+const active = new Set(SCREENS.map(s=>s.id));
+let cityFilter = "all";
+
+// ═══════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════
+function hex2rgba(hex,a){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return`rgba(${r},${g},${b},${a})`;
+}
+function svgEl(tag,attrs,text){
+  const el=document.createElementNS("http://www.w3.org/2000/svg",tag);
+  for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);
+  if(text!==undefined)el.textContent=text;
+  return el;
+}
+function ratioClass(r){
+  if(r>=2.2)return"ratio-wide";
+  if(r<=1.6)return"ratio-tall";
+  return"ratio-mid";
+}
+function ratioLabel(r){
+  if(r>=2.2)return"Ultra-Wide";
+  if(r<=1.6)return"Tall";
+  return"Cinematic";
+}
+
+// ═══════════════════════════════════════════
+//  URL SHARING
+// ═══════════════════════════════════════════
+function encodeState(){
+  const ids=[...active].sort().join(",");
+  const url=new URL(window.location.href);
+  url.searchParams.set("s",ids);
+  url.searchParams.set("c",cityFilter);
+  return url.toString();
+}
+function loadFromURL(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.has("s")){
+    active.clear();
+    p.get("s").split(",").forEach(id=>{const n=parseInt(id);if(!isNaN(n))active.add(n);});
+  }
+  if(p.has("c"))cityFilter=p.get("c");
+}
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2500);
+}
+
+// ═══════════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════════
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("on"));
+    t.classList.add("on");
+    document.getElementById("panel-"+t.dataset.tab).classList.add("on");
+    if(t.dataset.tab==="compare")renderCompare();
+    if(t.dataset.tab==="simulator")renderSimulator();
+  });
+});
+
+// ═══════════════════════════════════════════
+//  CITY FILTER
+// ═══════════════════════════════════════════
+document.querySelectorAll(".city-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".city-btn").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on");
+    cityFilter=b.dataset.city;
+    // apply to active set
+    if(cityFilter==="all"){
+      SCREENS.forEach(s=>active.add(s.id));
+    } else {
+      SCREENS.forEach(s=>{
+        if(s.city===cityFilter)active.add(s.id);
+        else active.delete(s.id);
+      });
+    }
+    syncToggleButtons();
+    refresh();
+  });
+});
+
+// ═══════════════════════════════════════════
+//  TOGGLE BUTTONS
+// ═══════════════════════════════════════════
+const togglesEl = document.getElementById("toggles");
+SCREENS.forEach(s=>{
+  const btn=document.createElement("button");
+  btn.className="tbtn on";
+  btn.dataset.id=s.id;
+  btn.style.borderColor=s.color;
+  btn.style.color=s.color;
+  btn.innerHTML=`<div class="chk"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="tn">${s.num}. ${s.short}</span><span class="tc">${s.city}</span>`;
+  btn.addEventListener("click",()=>{
+    if(active.has(s.id)){active.delete(s.id);btn.classList.replace("on","off");}
+    else{active.add(s.id);btn.classList.replace("off","on");}
+    cityFilter="all";
+    document.querySelectorAll(".city-btn").forEach(x=>x.classList.remove("on"));
+    document.querySelector(".city-btn[data-city='all']").classList.add("on");
+    refresh();
+  });
+  togglesEl.appendChild(btn);
+});
+document.getElementById("btnAll").addEventListener("click",()=>{
+  SCREENS.forEach(s=>{active.add(s.id);document.querySelector(`.tbtn[data-id="${s.id}"]`).classList.replace("off","on");});refresh();
+});
+document.getElementById("btnNone").addEventListener("click",()=>{
+  SCREENS.forEach(s=>{active.delete(s.id);document.querySelector(`.tbtn[data-id="${s.id}"]`).classList.replace("on","off");});refresh();
+});
+function syncToggleButtons(){
+  SCREENS.forEach(s=>{
+    const btn=document.querySelector(`.tbtn[data-id="${s.id}"]`);
+    if(active.has(s.id))btn.classList.replace("off","on");
+    else btn.classList.replace("on","off");
+  });
+}
+document.getElementById("shareBtn").addEventListener("click",()=>{
+  navigator.clipboard.writeText(encodeState()).then(()=>showToast("🔗 Link copied to clipboard!"));
+});
+
+// ═══════════════════════════════════════════
+//  CHART
+// ═══════════════════════════════════════════
+const PAD={top:44,right:250,bottom:60,left:66};
+const DW=980, DH=500;
+const SVG_W=PAD.left+DW+PAD.right, SVG_H=PAD.top+DH+PAD.bottom;
+
+function pW(w){return(w/MAX_W)*DW;}
+function pH(h){return(h/MAX_H)*DH;}
+
+const chartSvg=document.getElementById("chartSvg");
+chartSvg.setAttribute("viewBox",`0 0 ${SVG_W} ${SVG_H}`);
+chartSvg.setAttribute("height",SVG_H);
+
+// TOOLTIP
+const tooltip=document.getElementById("tooltip");
+const ttInner=document.getElementById("ttInner");
+chartSvg.addEventListener("mousemove",e=>{
+  const x=e.clientX,y=e.clientY;
+  tooltip.style.left=(x+16)+"px";
+  tooltip.style.top=(y-10)+"px";
+});
+chartSvg.addEventListener("mouseleave",()=>{tooltip.style.opacity=0;});
+
+function showTooltip(s){
+  const maxA=Math.max(...SCREENS.map(x=>x.area));
+  ttInner.style.borderColor=s.color;
+  ttInner.innerHTML=`
+    <div class="tt-name" style="color:${s.color}">${s.num}. ${s.name}</div>
+    <div class="tt-city">${s.city} · ${s.tag}</div>
+    <div class="tt-divider"></div>
+    <div class="tt-row"><span class="tt-k">Width</span><span class="tt-v">${s.w} ft</span></div>
+    <div class="tt-row"><span class="tt-k">Height</span><span class="tt-v">${s.h} ft</span></div>
+    <div class="tt-row"><span class="tt-k">Ratio</span><span class="tt-v">${s.w/s.h>0?(s.w/s.h).toFixed(2)+":1":"—"}</span></div>
+    <div class="tt-row"><span class="tt-k">Area</span><span class="tt-v">${s.area.toLocaleString()} sq ft</span></div>
+    <div class="tt-row"><span class="tt-k">vs Largest</span><span class="tt-v">${(s.area/maxA*100).toFixed(0)}%</span></div>
+    <div class="tt-bar" style="width:${(s.area/maxA*100).toFixed(0)}%;background:${s.color};"></div>
+  `;
+  tooltip.style.opacity=1;
+}
+
+function drawChart(){
+  chartSvg.innerHTML="";
+  const activeScreens=SCREENS.filter(s=>active.has(s.id));
+  const G=`translate(${PAD.left},${PAD.top})`;
+  const axG=svgEl("g",{transform:G});
+
+  // ── GRID & Y-AXIS ──
+  [0,10,20,30,40,50,60,64].forEach(v=>{
+    const y=DH-pH(v);
+    axG.appendChild(svgEl("line",{x1:0,y1:y,x2:DW,y2:y,stroke:"rgba(74,184,232,0.06)","stroke-width":1}));
+    axG.appendChild(svgEl("line",{x1:-5,y1:y,x2:0,y2:y,stroke:"#2a3a55","stroke-width":1}));
+    axG.appendChild(svgEl("text",{x:-9,y:y+4,"text-anchor":"end",fill:"#4a6282","font-family":"DM Mono,monospace","font-size":10},v+"ft"));
+  });
+  axG.appendChild(svgEl("text",{x:-46,y:DH/2,"text-anchor":"middle",fill:"#3a5272","font-family":"DM Mono,monospace","font-size":9,"letter-spacing":2,transform:`rotate(-90,-46,${DH/2})`},"HEIGHT (ft)"));
+
+  // ── X-AXIS ──
+  [0,20,40,57,60,63,70,75,82,100,101.6].forEach(v=>{
+    const x=pW(v);
+    axG.appendChild(svgEl("line",{x1:x,y1:0,x2:x,y2:DH,stroke:"rgba(74,184,232,0.05)","stroke-width":1}));
+    axG.appendChild(svgEl("line",{x1:x,y1:DH,x2:x,y2:DH+5,stroke:"#2a3a55","stroke-width":1}));
+    axG.appendChild(svgEl("text",{x:x,y:DH+17,"text-anchor":"middle",fill:"#4a6282","font-family":"DM Mono,monospace","font-size":9},v));
+  });
+  axG.appendChild(svgEl("text",{x:DW/2,y:DH+36,"text-anchor":"middle",fill:"#3a5272","font-family":"DM Mono,monospace","font-size":9,"letter-spacing":2},"WIDTH (ft)"));
+
+  // Axis borders
+  axG.appendChild(svgEl("line",{x1:0,y1:0,x2:0,y2:DH,stroke:"#233044","stroke-width":1.5}));
+  axG.appendChild(svgEl("line",{x1:0,y1:DH,x2:DW,y2:DH,stroke:"#233044","stroke-width":1.5}));
+  chartSvg.appendChild(axG);
+
+  if(activeScreens.length===0){
+    chartSvg.appendChild(svgEl("text",{x:SVG_W/2,y:SVG_H/2,"text-anchor":"middle",fill:"#2a3a55","font-family":"Barlow Condensed,sans-serif","font-size":22,"letter-spacing":3},"NO SCREENS SELECTED"));
+    return;
+  }
+
+  // ── HUMAN SILHOUETTE (6ft = reference) ──
+  const humanH=pH(6);
+  const humanX=12;
+  const humanY=DH-humanH;
+  const humanG=svgEl("g",{transform:G,opacity:0.45});
+  // body stick figure simplified
+  const hcx=humanX+7;
+  const headR=humanH*0.10;
+  const bodyTop=humanY+headR*2+2;
+  const bodyBot=humanY+humanH*0.62;
+  const legBot=DH;
+  humanG.appendChild(svgEl("circle",{cx:hcx,cy:humanY+headR,r:headR,fill:"none",stroke:"#8aaabf","stroke-width":1.2}));
+  humanG.appendChild(svgEl("line",{x1:hcx,y1:bodyTop,x2:hcx,y2:bodyBot,stroke:"#8aaabf","stroke-width":1.2}));
+  humanG.appendChild(svgEl("line",{x1:hcx-humanH*0.12,y1:bodyTop+humanH*0.06,x2:hcx+humanH*0.12,y2:bodyTop+humanH*0.06,stroke:"#8aaabf","stroke-width":1.2}));
+  humanG.appendChild(svgEl("line",{x1:hcx,y1:bodyBot,x2:hcx-humanH*0.09,y2:legBot,stroke:"#8aaabf","stroke-width":1.2}));
+  humanG.appendChild(svgEl("line",{x1:hcx,y1:bodyBot,x2:hcx+humanH*0.09,y2:legBot,stroke:"#8aaabf","stroke-width":1.2}));
+  // label
+  humanG.appendChild(svgEl("text",{x:hcx,y:DH+14,"text-anchor":"middle",fill:"#8aaabf","font-family":"DM Mono,monospace","font-size":8},"6ft"));
+  // height line
+  humanG.appendChild(svgEl("line",{x1:hcx+10,y1:humanY,x2:hcx+10,y2:DH,stroke:"#8aaabf","stroke-width":0.8,"stroke-dasharray":"2,2"}));
+  chartSvg.appendChild(humanG);
+
+  // ── SCREEN RECTS (largest to smallest) ──
+  const sorted=[...activeScreens].sort((a,b)=>b.area-a.area);
+  const rectG=svgEl("g",{transform:G});
+
+  sorted.forEach(s=>{
+    const rw=pW(s.w), rh=pH(s.h);
+    const ry=DH-rh;
+    const g=svgEl("g",{"data-id":s.id,cursor:"pointer"});
+    g.addEventListener("mouseenter",()=>showTooltip(s));
+    g.addEventListener("mouseleave",()=>{tooltip.style.opacity=0;});
+
+    // gradient fill definition
+    const gId=`grad${s.id}`;
+    const defs=svgEl("defs",{});
+    const lg=svgEl("linearGradient",{id:gId,x1:0,y1:0,x2:0,y2:1});
+    lg.appendChild(svgEl("stop",{"offset":"0%","stop-color":s.color,"stop-opacity":"0.14"}));
+    lg.appendChild(svgEl("stop",{"offset":"100%","stop-color":s.color,"stop-opacity":"0.04"}));
+    defs.appendChild(lg);
+    g.appendChild(defs);
+
+    // Main rect with gradient
+    g.appendChild(svgEl("rect",{x:0,y:ry,width:rw,height:rh,
+      fill:`url(#${gId})`,stroke:s.color,"stroke-width":1.8,rx:1}));
+
+    // Number badge top-left inside rect
+    g.appendChild(svgEl("rect",{x:4,y:ry+4,width:22,height:16,fill:s.color,rx:2,opacity:0.9}));
+    g.appendChild(svgEl("text",{x:15,y:ry+15,"text-anchor":"middle",fill:"#000","font-family":"Bebas Neue,sans-serif","font-size":12,"font-weight":"bold"},s.num));
+
+    // NEW badge
+    if(s.isNew){
+      g.appendChild(svgEl("rect",{x:28,y:ry+4,width:30,height:16,fill:"#e84a7a",rx:2}));
+      g.appendChild(svgEl("text",{x:43,y:ry+15,"text-anchor":"middle",fill:"#fff","font-family":"Bebas Neue,sans-serif","font-size":10,"letter-spacing":1},"NEW"));
+    }
+
+    // Width dim line (inside, near top)
+    if(rw>70){
+      const wy=ry+28;
+      g.appendChild(svgEl("line",{x1:8,y1:wy,x2:rw-8,y2:wy,stroke:s.color,"stroke-width":0.8,opacity:0.5}));
+      [[8,wy-3,8,wy+3],[rw-8,wy-3,rw-8,wy+3]].forEach(([x1,y1,x2,y2])=>
+        g.appendChild(svgEl("line",{x1,y1,x2,y2,stroke:s.color,"stroke-width":0.8,opacity:0.5})));
+      g.appendChild(svgEl("text",{x:rw/2,y:wy-5,"text-anchor":"middle",fill:s.color,"font-family":"DM Mono,monospace","font-size":9,opacity:0.8},`${s.w} ft`));
+    }
+
+    // Height dim line (right, inside)
+    if(rh>50){
+      const hx=rw-18;
+      g.appendChild(svgEl("line",{x1:hx,y1:ry+10,x2:hx,y2:DH-10,stroke:s.color,"stroke-width":0.8,opacity:0.5}));
+      [[hx-3,ry+10,hx+3,ry+10],[hx-3,DH-10,hx+3,DH-10]].forEach(([x1,y1,x2,y2])=>
+        g.appendChild(svgEl("line",{x1,y1,x2,y2,stroke:s.color,"stroke-width":0.8,opacity:0.5})));
+      const mid=(ry+DH)/2;
+      g.appendChild(svgEl("text",{x:hx-5,y:mid,"text-anchor":"middle",fill:s.color,"font-family":"DM Mono,monospace","font-size":9,opacity:0.8,transform:`rotate(-90,${hx-5},${mid})`},`${s.h} ft`));
+    }
+
+    // Ratio pill inside (bottom right of large screens)
+    if(rw>160 && rh>60){
+      const rat=(s.w/s.h).toFixed(2)+":1";
+      const pillW=65,pillH=16,pillX=rw-pillW-6,pillY=DH-pillH-6;
+      g.appendChild(svgEl("rect",{x:pillX,y:pillY,width:pillW,height:pillH,rx:8,fill:hex2rgba(s.color,0.18),stroke:s.color,"stroke-width":0.8}));
+      g.appendChild(svgEl("text",{x:pillX+pillW/2,y:pillY+11,"text-anchor":"middle",fill:s.color,"font-family":"DM Mono,monospace","font-size":9},rat));
+    }
+
+    rectG.appendChild(g);
+  });
+  chartSvg.appendChild(rectG);
+
+  // ── SIDE LABELS (right panel, always visible, scroll if needed) ──
+  const LBL_H=66, LBL_W=218, LBL_X=DW+22, LBL_GAP=4;
+
+  // Sort by anchor Y (top of rect = smaller anchorY = larger screen)
+  const labelData=activeScreens.map(s=>{
+    const rh=pH(s.h);
+    return{s, anchorX:pW(s.w), anchorY:DH-rh};
+  }).sort((a,b)=>a.anchorY-b.anchorY);
+
+  // Space them evenly across the full DH, ignoring ideal position
+  // This guarantees no overflow ever
+  const totalNeeded = labelData.length*(LBL_H+LBL_GAP)-LBL_GAP;
+  const startY = Math.max(0, (DH-totalNeeded)/2);
+  const pos = labelData.map((d,i)=>({
+    ...d,
+    ly: totalNeeded<=DH ? startY + i*(LBL_H+LBL_GAP) : i*(DH/(labelData.length||1))
+  }));
+
+  // Fine: try to nudge each toward ideal position without overlapping
+  // Pass 1: assign ideal
+  pos.forEach(p=>p.ly_ideal=p.anchorY);
+  // Pass 2: clamp and space
+  let positions=pos.map(p=>({...p,ly:Math.min(p.anchorY, DH-LBL_H)}));
+  // Resolve overlaps top→down
+  for(let i=1;i<positions.length;i++){
+    if(positions[i].ly < positions[i-1].ly+LBL_H+LBL_GAP)
+      positions[i].ly=positions[i-1].ly+LBL_H+LBL_GAP;
+  }
+  // If still overflows bottom, space evenly
+  if(positions.length && positions[positions.length-1].ly+LBL_H > DH+2){
+    const step = labelData.length>1 ? (DH-LBL_H)/(labelData.length-1) : 0;
+    positions.forEach((p,i)=>p.ly=i*step);
+  }
+
+  const lblG=svgEl("g",{transform:G});
+  positions.forEach(({s,anchorX,anchorY,ly})=>{
+    const midLY=ly+LBL_H/2;
+
+    // Leader line
+    const c1x=anchorX+Math.min(50,DW-anchorX), c1y=anchorY;
+    const c2x=LBL_X-20, c2y=midLY;
+    lblG.appendChild(svgEl("path",{
+      d:`M${anchorX+1} ${anchorY} C${c1x} ${c1y},${c2x} ${c2y},${LBL_X-2} ${midLY}`,
+      fill:"none",stroke:s.color,"stroke-width":0.9,"stroke-opacity":0.35,"stroke-dasharray":"4,3"
+    }));
+    lblG.appendChild(svgEl("circle",{cx:anchorX+1,cy:anchorY,r:3,fill:s.color,opacity:0.6}));
+
+    // Label box
+    lblG.appendChild(svgEl("rect",{x:LBL_X,y:ly,width:LBL_W,height:LBL_H,
+      fill:hex2rgba(s.color,0.05),stroke:s.color,"stroke-width":1,"stroke-opacity":0.28,rx:4}));
+
+    // Left color bar
+    lblG.appendChild(svgEl("rect",{x:LBL_X,y:ly,width:3,height:LBL_H,fill:s.color,rx:2,opacity:0.7}));
+
+    // Num + short name
+    lblG.appendChild(svgEl("text",{x:LBL_X+10,y:ly+17,fill:s.color,
+      "font-family":"Bebas Neue,sans-serif","font-size":15,"letter-spacing":1},
+      `${s.num}.  ${s.short}`));
+
+    // Full name (truncated to fit)
+    const fullName = s.name.length>26 ? s.name.slice(0,24)+"…" : s.name;
+    lblG.appendChild(svgEl("text",{x:LBL_X+10,y:ly+28,fill:"#8aaabf",
+      "font-family":"DM Mono,monospace","font-size":8,opacity:0.75},fullName));
+
+    // City + tag
+    lblG.appendChild(svgEl("text",{x:LBL_X+10,y:ly+39,fill:s.color,
+      "font-family":"DM Mono,monospace","font-size":8,opacity:0.5},
+      `${s.city}  ·  ${s.tag}`));
+
+    // Dims
+    lblG.appendChild(svgEl("text",{x:LBL_X+10,y:ly+51,fill:"#c8dff0",
+      "font-family":"DM Mono,monospace","font-size":10,opacity:0.9},
+      `${s.w} × ${s.h} ft`));
+
+    // Ratio
+    lblG.appendChild(svgEl("text",{x:LBL_X+10,y:ly+62,fill:"#7a9abf",
+      "font-family":"DM Mono,monospace","font-size":9,opacity:0.7},
+      `${(s.w/s.h).toFixed(2)}:1  ·  ${s.area.toLocaleString()} sq ft`));
+  });
+  chartSvg.appendChild(lblG);
+}
+
+// ═══════════════════════════════════════════
+//  TABLE
+// ═══════════════════════════════════════════
+function drawTable(){
+  const tbody=document.getElementById("tableBody");
+  tbody.innerHTML="";
+  const maxA=Math.max(...SCREENS.map(s=>s.area));
+  SCREENS.forEach(s=>{
+    const pct=(s.area/maxA*100).toFixed(0);
+    const rc=ratioClass(s.w/s.h);
+    const rl=ratioLabel(s.w/s.h);
+    const row=document.createElement("div");
+    row.className="tbl-row"+(active.has(s.id)?"":" off");
+    row.innerHTML=`
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${s.color}">${s.num}</div>
+      <div>
+        <div class="td-n"><span class="sw" style="background:${s.color}"></span>${s.short}</div>
+        <div class="td-c">${s.name}</div>
+        <div class="td-c" style="margin-top:1px">${s.city}</div>
+      </div>
+      <div><span class="td-tag" style="color:${TYPE_COLORS[s.type]||s.color};border-color:${TYPE_COLORS[s.type]||s.color};opacity:0.85">${s.tag}</span></div>
+      <div class="td-mono">${s.w} × ${s.h}</div>
+      <div><span class="ratio-pill ${rc}" style="font-size:11px">${(s.w/s.h).toFixed(2)}:1</span><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px">${rl}</div></div>
+      <div class="td-area">~${s.area.toLocaleString()} sq ft</div>
+      <div class="bar-w"><div class="bar-bg"><div class="bar-f" style="width:${active.has(s.id)?pct:0}%;background:${s.color}"></div></div><span class="pct">${pct}%</span></div>
+    `;
+    row.addEventListener("click",()=>{
+      if(active.has(s.id)){active.delete(s.id);}else{active.add(s.id);}
+      syncToggleButtons();refresh();
+    });
+    tbody.appendChild(row);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  COMPARE PANEL
+// ═══════════════════════════════════════════
+function buildCompareSelects(){
+  ["cmpA","cmpB"].forEach((id,i)=>{
+    const sel=document.getElementById(id);
+    sel.innerHTML="";
+    SCREENS.forEach(s=>{
+      const o=document.createElement("option");
+      o.value=s.id;
+      o.textContent=`${s.num}. ${s.short} (${s.city})`;
+      sel.appendChild(o);
+    });
+    sel.value=SCREENS[i].id;
+    sel.addEventListener("change",renderCompare);
+  });
+}
+function renderCompare(){
+  const a=SCREENS.find(s=>s.id==document.getElementById("cmpA").value);
+  const b=SCREENS.find(s=>s.id==document.getElementById("cmpB").value);
+  if(!a||!b)return;
+  const maxH=Math.max(a.h,b.h);
+  const CARD_W=300;
+  const visual=document.getElementById("cmpVisual");
+  visual.innerHTML="";
+
+  [a,b].forEach((s,i)=>{
+    const boxH=Math.round((s.h/maxH)*220);
+    const boxW=Math.round(boxH*(s.w/s.h));
+    const card=document.createElement("div");
+    card.className="cmp-card";
+    card.innerHTML=`
+      <div style="display:flex;align-items:flex-end;justify-content:center;height:240px;">
+        <div class="cmp-screen-box" style="width:${Math.min(boxW,320)}px;height:${boxH}px;border-color:${s.color};background:${hex2rgba(s.color,0.08)}">
+          <div class="cmp-screen-label" style="color:${s.color};font-size:${boxH>80?'15px':'11px'}">${s.short}<br><span style="font-family:'DM Mono',monospace;font-size:9px;opacity:0.7">${s.w}×${s.h} ft</span></div>
+        </div>
+      </div>
+      <div class="cmp-stats">
+        <div class="cmp-stat"><span class="cmp-stat-k">Full Name</span><span class="cmp-stat-v" style="color:${s.color};font-size:10px">${s.name}</span></div>
+        <div class="cmp-stat"><span class="cmp-stat-k">City</span><span class="cmp-stat-v">${s.city}</span></div>
+        <div class="cmp-stat"><span class="cmp-stat-k">Type</span><span class="cmp-stat-v" style="color:${TYPE_COLORS[s.type]||s.color}">${s.tag}</span></div>
+        <div class="cmp-stat"><span class="cmp-stat-k">Width</span><span class="cmp-stat-v">${s.w} ft</span></div>
+        <div class="cmp-stat"><span class="cmp-stat-k">Height</span><span class="cmp-stat-v">${s.h} ft</span></div>
+        <div class="cmp-stat"><span class="cmp-stat-k">Ratio</span><span class="cmp-stat-v">${(s.w/s.h).toFixed(2)}:1</span></div>
+        <div class="cmp-stat"><span class="cmp-stat-k">Area</span><span class="cmp-stat-v" style="color:var(--acc)">${s.area.toLocaleString()} sq ft</span></div>
+      </div>
+    `;
+    visual.appendChild(card);
+    if(i===0){
+      const vs=document.createElement("div");
+      vs.className="cmp-vs";vs.textContent="VS";
+      visual.appendChild(vs);
+    }
+  });
+
+  // Diff section
+  const wider=a.w>b.w?a:b, taller=a.h>b.h?a:b, bigger=a.area>b.area?a:b;
+  const areaDiff=Math.abs(a.area-b.area);
+  const areaPct=(areaDiff/Math.min(a.area,b.area)*100).toFixed(0);
+  const widthDiff=Math.abs(a.w-b.w).toFixed(1);
+  const heightDiff=Math.abs(a.h-b.h).toFixed(1);
+
+  document.getElementById("cmpDiff").innerHTML=`
+    <h3>Key Differences</h3>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <div class="diff-val" style="color:${bigger.color}">${areaPct}%</div>
+        <div class="diff-lbl">${bigger.short} is larger by area</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-val" style="color:${wider.color}">${widthDiff} ft</div>
+        <div class="diff-lbl">${wider.short} is wider</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-val" style="color:${taller.color}">${heightDiff} ft</div>
+        <div class="diff-lbl">${taller.short} is taller</div>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════
+//  MOVIE FIT SIMULATOR
+// ═══════════════════════════════════════════
+const FORMATS={
+  imax:  {ratio:1.43, label:"IMAX Filmed (1.43:1)",    color:"#4ab8e8"},
+  scope: {ratio:2.39, label:"Anamorphic Scope (2.39:1)",color:"#e8c84a"},
+  flat:  {ratio:1.85, label:"Flat / 1.85:1",            color:"#7be87f"},
+  wide:  {ratio:2.35, label:"Widescreen 2.35:1",        color:"#e87b4a"},
+  standard:{ratio:1.78,label:"Standard 16:9 (1.78:1)",  color:"#c87be8"},
+};
+let simFmt="imax";
+
+document.querySelectorAll(".sim-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".sim-btn").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on");
+    simFmt=b.dataset.fmt;
+    renderSimulator();
+  });
+});
+
+function renderSimulator(){
+  const container=document.getElementById("simScreens");
+  container.innerHTML="";
+  const fmt=FORMATS[simFmt];
+  const CANVAS_W=280;
+
+  SCREENS.forEach(s=>{
+    const screenRatio=s.w/s.h;
+    const movieRatio=fmt.ratio;
+    const card=document.createElement("div");
+    card.className="sim-screen-card";
+
+    const canvasH=Math.round(CANVAS_W/screenRatio);
+    // Movie content dimensions within screen
+    let movieW,movieH;
+    if(movieRatio<=screenRatio){
+      // Movie is narrower — pillarbox (or fits height)
+      movieH=canvasH;
+      movieW=Math.round(canvasH*movieRatio);
+    } else {
+      // Movie is wider — letterbox (black bars top/bottom)
+      movieW=CANVAS_W;
+      movieH=Math.round(CANVAS_W/movieRatio);
+    }
+    const barH=(canvasH-movieH)/2;
+    const barW=(CANVAS_W-movieW)/2;
+    const fillPct=((movieW*movieH)/(CANVAS_W*canvasH)*100).toFixed(0);
+
+    const canvas=document.createElement("canvas");
+    canvas.width=CANVAS_W;canvas.height=canvasH;
+    canvas.className="sim-canvas";
+    const ctx=canvas.getContext("2d");
+
+    // Screen background (unused areas = very dark)
+    ctx.fillStyle="#050810";
+    ctx.fillRect(0,0,CANVAS_W,canvasH);
+
+    // Black bar stripes (letterbox / pillarbox)
+    if(barH>0){
+      ctx.fillStyle="rgba(0,0,0,0.85)";
+      ctx.fillRect(0,0,CANVAS_W,barH);
+      ctx.fillRect(0,canvasH-barH,CANVAS_W,barH);
+    }
+    if(barW>0){
+      ctx.fillStyle="rgba(0,0,0,0.85)";
+      ctx.fillRect(0,0,barW,canvasH);
+      ctx.fillRect(CANVAS_W-barW,0,barW,canvasH);
+    }
+
+    // Movie content area (glowing rectangle)
+    const mx=barW, my=barH, mw=movieW, mh=movieH;
+    const grad=ctx.createLinearGradient(mx,my,mx,my+mh);
+    grad.addColorStop(0,hex2rgba(s.color,0.22));
+    grad.addColorStop(1,hex2rgba(s.color,0.06));
+    ctx.fillStyle=grad;
+    ctx.fillRect(mx,my,mw,mh);
+
+    // Screen border
+    ctx.strokeStyle=s.color;ctx.lineWidth=1.5;ctx.globalAlpha=0.6;
+    ctx.strokeRect(0.75,0.75,CANVAS_W-1.5,canvasH-1.5);
+    ctx.globalAlpha=1;
+
+    // Movie area border
+    if(barH>1||barW>1){
+      ctx.strokeStyle=fmt.color;ctx.lineWidth=1;ctx.globalAlpha=0.5;
+      ctx.strokeRect(mx,my,mw,mh);
+      ctx.globalAlpha=1;
+    }
+
+    // Fill % text in center
+    ctx.font=`bold ${Math.max(14,Math.min(20,mh*0.2))}px 'Barlow Condensed',sans-serif`;
+    ctx.fillStyle=s.color;ctx.textAlign="center";ctx.globalAlpha=0.85;
+    if(mh>24)ctx.fillText(`${fillPct}% used`,mx+mw/2,my+mh/2+6);
+    ctx.globalAlpha=1;
+
+    // Black bar labels
+    if(barH>8){
+      ctx.font="10px 'DM Mono',monospace";
+      ctx.fillStyle="rgba(100,130,160,0.8)";ctx.textAlign="center";
+      ctx.fillText("▐ black bar ▌",CANVAS_W/2,barH/2+4);
+      ctx.fillText("▐ black bar ▌",CANVAS_W/2,canvasH-barH/2+4);
+    }
+    if(barW>12){
+      ctx.save();ctx.translate(barW/2,canvasH/2);ctx.rotate(-Math.PI/2);
+      ctx.font="9px 'DM Mono',monospace";
+      ctx.fillStyle="rgba(100,130,160,0.8)";ctx.textAlign="center";
+      ctx.fillText("bar",0,4);
+      ctx.restore();
+    }
+
+    card.innerHTML=`
+      <div class="sim-screen-name" style="color:${s.color}">${s.num}. ${s.short} <span style="font-family:'DM Mono',monospace;font-size:9px;opacity:0.5">${s.w}×${s.h}ft · ${screenRatio.toFixed(2)}:1</span></div>
+    `;
+    const wrap=document.createElement("div");
+    wrap.className="sim-canvas-wrap";
+    wrap.appendChild(canvas);
+    card.appendChild(wrap);
+    card.innerHTML+=`<div class="sim-label">${fmt.label} → <strong style="color:${s.color}">${fillPct}% screen used</strong>${barH>0?` · ${barH.toFixed(0)}px black bars top/bottom`:""}${barW>0?` · pillarbox`:""}  </div>`;
+    card.querySelector(".sim-canvas-wrap").appendChild(canvas);
+    // rebuild cleanly
+    card.innerHTML="";
+    const nameEl=document.createElement("div");
+    nameEl.className="sim-screen-name";
+    nameEl.style.color=s.color;
+    nameEl.innerHTML=`${s.num}. ${s.short} <span style="font-family:'DM Mono',monospace;font-size:9px;opacity:0.5">${s.w}×${s.h}ft · ${screenRatio.toFixed(2)}:1</span>`;
+    card.appendChild(nameEl);
+    const canvasWrap2=document.createElement("div");
+    canvasWrap2.className="sim-canvas-wrap";
+    canvasWrap2.appendChild(canvas);
+    card.appendChild(canvasWrap2);
+    const lbl=document.createElement("div");
+    lbl.className="sim-label";
+    lbl.innerHTML=`${fmt.label} → <strong style="color:${s.color}">${fillPct}% screen used</strong>${barH>1?` · ${(barH/canvasH*100*2).toFixed(0)}% lost to bars`:"  ✅ Full screen"}`;
+    card.appendChild(lbl);
+    container.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  HEADER PILLS UPDATE
+// ═══════════════════════════════════════════
+function updatePills(){
+  const act=SCREENS.filter(s=>active.has(s.id));
+  document.getElementById("screenCountPill").textContent=`${SCREENS.length} Screens`;
+  document.getElementById("activePill").textContent=`${act.length} / ${SCREENS.length} Active`;
+  document.getElementById("activeCount").textContent=`${act.length} / ${SCREENS.length} Active`;
+  if(act.length){
+    const areas=act.map(s=>s.area);
+    document.getElementById("areaRangePill").textContent=`Area: ${Math.min(...areas).toLocaleString()} – ${Math.max(...areas).toLocaleString()} sq ft`;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  REFRESH
+// ═══════════════════════════════════════════
+function refresh(){
+  updatePills();
+  drawChart();
+  drawTable();
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+loadFromURL();
+buildCompareSelects();
+syncToggleButtons();
+refresh();
+renderSimulator();
+</script>
+</body>
+</html>
